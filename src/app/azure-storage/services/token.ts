@@ -2,7 +2,7 @@ import { InjectionToken } from '@angular/core';
 import { BlobServiceClient } from '@azure/storage-blob';
 import {
   BlobStorageClientFactory,
-  BlobStorageRequest
+  BlobStorageRequest,
 } from '../types/azure-storage';
 
 export const BLOB_STORAGE_TOKEN = new InjectionToken<BlobStorageClientFactory>(
@@ -17,6 +17,6 @@ export function azureBlobStorageFactory(): BlobStorageClientFactory {
     );
   };
 
-  return options =>
+  return (options) =>
     BlobServiceClient.fromConnectionString(buildConnectionString(options));
 }
