@@ -20,7 +20,7 @@ import { BlobSharedViewStateService } from '../services/blob-shared-view-state.s
         </div>
       </div>
     </ng-container>
-  `
+  `,
 })
 export class ItemsListComponent {
   items$ = this.blobState.itemsInContainer$;
