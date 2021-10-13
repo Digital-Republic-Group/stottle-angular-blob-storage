@@ -8,7 +8,7 @@ import { BlobDeletesViewStateService } from '../services/blob-deletes-view-state
     <div *ngFor="let item of deletedItems$ | async">
       <pre> {{ item | json }}</pre>
     </div>
-  `
+  `,
 })
 export class ItemsDeletedComponent {
   deletedItems$ = this.blobState.deletedItems$;

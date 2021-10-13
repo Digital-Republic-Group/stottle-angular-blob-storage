@@ -9,7 +9,7 @@ import { BlobSharedViewStateService } from '../services/blob-shared-view-state.s
 
       <ng-content></ng-content>
     </ng-container>
-  `
+  `,
 })
 export class SelectedContainerComponent {
   selectedContainer$ = this.blobState.selectedContainer$;

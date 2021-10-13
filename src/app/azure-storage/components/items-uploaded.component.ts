@@ -8,7 +8,7 @@ import { BlobUploadsViewStateService } from '../services/blob-uploads-view-state
     <ng-container *ngFor="let upload of uploads$ | async">
       <pre>{{ upload | json }}</pre>
     </ng-container>
-  `
+  `,
 })
 export class ItemsUploadedComponent {
   uploads$ = this.blobState.uploadedItems$;

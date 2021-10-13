@@ -7,13 +7,13 @@ import { BlobSharedViewStateService } from './blob-shared-view-state.service';
 import { BlobStorageService } from './blob-storage.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BlobDeletesViewStateService {
   private deleteQueueInner$ = new Subject<string>();
 
   deletedItems$ = this.deleteQueue$.pipe(
-    mergeMap(filename => this.deleteFile(filename)),
+    mergeMap((filename) => this.deleteFile(filename)),
     this.blobState.scanEntries()
   );
 
@@ -32,11 +32,11 @@ export class BlobDeletesViewStateService {
 
   private deleteFile = (filename: string) =>
     this.blobState.getStorageOptionsWithContainer().pipe(
-      switchMap(options =>
+      switchMap((options) =>
         this.blobStorage
           .deleteBlobItem({
             ...options,
-            filename
+            filename,
           })
           .pipe(
             this.mapDeleteResponse(filename, options),
@@ -45,18 +45,20 @@ export class BlobDeletesViewStateService {
       )
     );
 
-  private mapDeleteResponse = (
-    filename: string,
-    options: BlobContainerRequest
-  ): OperatorFunction<BlobDeleteResponse, BlobItem> => source =>
-    source.pipe(
-      map(() => ({
-        filename,
-        containerName: options.containerName
-      })),
-      startWith({
-        filename,
-        containerName: options.containerName
-      })
-    );
+  private mapDeleteResponse =
+    (
+      filename: string,
+      options: BlobContainerRequest
+    ): OperatorFunction<BlobDeleteResponse, BlobItem> =>
+    (source) =>
+      source.pipe(
+        map(() => ({
+          filename,
+          containerName: options.containerName,
+        })),
+        startWith({
+          filename,
+          containerName: options.containerName,
+        })
+      );
 }

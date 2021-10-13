@@ -8,13 +8,13 @@ import { BlobSharedViewStateService } from './blob-shared-view-state.service';
 import { BlobStorageService } from './blob-storage.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BlobDownloadsViewStateService {
   private downloadQueueInner$ = new Subject<string>();
 
   downloadedItems$ = this.downloadQueue$.pipe(
-    mergeMap(filename => this.downloadFile(filename)),
+    mergeMap((filename) => this.downloadFile(filename)),
     this.blobState.scanEntries()
   );
 
@@ -34,11 +34,11 @@ export class BlobDownloadsViewStateService {
 
   private downloadFile = (filename: string) =>
     this.blobState.getStorageOptionsWithContainer().pipe(
-      switchMap(options =>
+      switchMap((options) =>
         this.blobStorage
           .downloadBlobItem({
             ...options,
-            filename
+            filename,
           })
           .pipe(
             this.getDownloadUrlFromResponse(),
@@ -47,33 +47,33 @@ export class BlobDownloadsViewStateService {
       )
     );
 
-  private mapDownloadResponse = (
-    filename: string,
-    options: BlobContainerRequest
-  ): OperatorFunction<string, BlobItemDownload> => source =>
-    source.pipe(
-      map(url => ({
-        filename,
-        containerName: options.containerName,
-        url
-      })),
-      startWith({
-        filename,
-        containerName: options.containerName,
-        url: ''
-      })
-    );
+  private mapDownloadResponse =
+    (
+      filename: string,
+      options: BlobContainerRequest
+    ): OperatorFunction<string, BlobItemDownload> =>
+    (source) =>
+      source.pipe(
+        map((url) => ({
+          filename,
+          containerName: options.containerName,
+          url,
+        })),
+        startWith({
+          filename,
+          containerName: options.containerName,
+          url: '',
+        })
+      );
 
-  private getDownloadUrlFromResponse = (): OperatorFunction<
-    BlobDownloadResponseModel,
-    string
-  > => source =>
-    source.pipe(
-      switchMap(res =>
-        from(res.blobBody).pipe(
-          map(body => window.URL.createObjectURL(body)),
-          map(url => this.sanitizer.bypassSecurityTrustUrl(url) as string)
+  private getDownloadUrlFromResponse =
+    (): OperatorFunction<BlobDownloadResponseModel, string> => (source) =>
+      source.pipe(
+        switchMap((res) =>
+          from(res.blobBody).pipe(
+            map((body) => window.URL.createObjectURL(body)),
+            map((url) => this.sanitizer.bypassSecurityTrustUrl(url) as string)
+          )
         )
-      )
-    );
+      );
 }

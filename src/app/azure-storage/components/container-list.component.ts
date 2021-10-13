@@ -9,7 +9,7 @@ import { BlobSharedViewStateService } from '../services/blob-shared-view-state.s
       {{ container.name }}
       <button (click)="onClick(container.name)">View</button>
     </div>
-  `
+  `,
 })
 export class ContainerListComponent {
   containers$ = this.blobState.containers$;

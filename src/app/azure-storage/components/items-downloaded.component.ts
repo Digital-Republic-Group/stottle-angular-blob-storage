@@ -7,11 +7,11 @@ import { BlobDownloadsViewStateService } from '../services/blob-downloads-view-s
     <h3>Downloads</h3>
     <div *ngFor="let download of downloads$ | async">
       {{ download.containerName }}:
-      <a [href]="download.url" target="_blank">
+      <a [href]="download.url" target="_blank" [download]="download.filename">
         {{ download.filename }}
       </a>
     </div>
-  `
+  `,
 })
 export class ItemsDownloadedComponent {
   downloads$ = this.blobState.downloadedItems$;

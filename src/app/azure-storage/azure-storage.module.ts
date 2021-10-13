@@ -1,6 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { ContainerListComponent } from './components/container-list.component';
 import { InputFileComponent } from './components/input-file.component';
 import { ItemsDeletedComponent } from './components/items-deleted.component';
@@ -11,7 +12,7 @@ import { SelectedContainerComponent } from './components/selected-container.comp
 import { azureBlobStorageFactory, BLOB_STORAGE_TOKEN } from './services/token';
 
 @NgModule({
-  imports: [BrowserModule, HttpClientModule],
+  imports: [CommonModule], //BrowserModule, HttpClientModule],
   declarations: [
     ContainerListComponent,
     ItemsListComponent,
@@ -19,13 +20,13 @@ import { azureBlobStorageFactory, BLOB_STORAGE_TOKEN } from './services/token';
     InputFileComponent,
     ItemsDownloadedComponent,
     ItemsUploadedComponent,
-    ItemsDeletedComponent
+    ItemsDeletedComponent,
   ],
   providers: [
     {
       provide: BLOB_STORAGE_TOKEN,
-      useFactory: azureBlobStorageFactory
-    }
+      useFactory: azureBlobStorageFactory,
+    },
   ],
   exports: [
     ContainerListComponent,
@@ -34,7 +35,7 @@ import { azureBlobStorageFactory, BLOB_STORAGE_TOKEN } from './services/token';
     InputFileComponent,
     ItemsDownloadedComponent,
     ItemsUploadedComponent,
-    ItemsDeletedComponent
-  ]
+    ItemsDeletedComponent,
+  ],
 })
 export class AzureStorageModule {}
