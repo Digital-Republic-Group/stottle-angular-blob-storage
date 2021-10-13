@@ -9,19 +9,23 @@ import { BlobUploadsViewStateService } from '../services/blob-uploads-view-state
       type="file"
       #fileInput
       multiple="multiple"
-      (change)="onSelected($event.target.files)"
+      (change)="onSelected($event.target)"
     />
     <button (click)="showFileDialog()">Click here to Upload File</button>
-  `
+  `,
 })
 export class InputFileComponent {
-  @ViewChild('fileInput', { static: false }) fileInput: ElementRef<
-    HTMLInputElement
-  >;
+  @ViewChild('fileInput', { static: false })
+  fileInput: ElementRef<HTMLInputElement>;
 
-  constructor(private blobState: BlobUploadsViewStateService) {}
+  constructor(
+    private blobState: BlobUploadsViewStateService 
+  ) {}
 
-  onSelected(files: FileList): void {
+  onSelected(target: any): void {
+    const files = target.files;
+
+    // upload the files to azure
     this.blobState.uploadItems(files);
     this.fileInput.nativeElement.value = '';
   }
