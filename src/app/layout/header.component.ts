@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-header',
   template: `
     <div>
-      <h1 style="text-align: center">stottle-angular-blob-storage</h1>
+      <h1 style="text-align: center">Digital Republic blob storage - from stottle-angular-blob-storage</h1>
       <div>
         Medium Article:
         <a
@@ -18,7 +18,7 @@ import { Component } from '@angular/core';
       <div>
         Github:
         <a
-          href="https://github.com/stottle-uk/stottle-angular-blob-storage"
+          href="https://github.com/Digital-Republic-Group/stottle-angular-blob-storage"
           target="_blank"
           rel="noopener noreferrer"
         >
