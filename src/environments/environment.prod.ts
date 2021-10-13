@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  sasGeneratorUrl: 'https://stottle-blob-storage-api.azurewebsites.net'
+  sasGeneratorUrl: 'http://localhost:3030/sastoken/1'
 };
