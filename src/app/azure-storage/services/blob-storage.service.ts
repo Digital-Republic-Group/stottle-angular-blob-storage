@@ -1,19 +1,23 @@
-import { Inject, Injectable } from "@angular/core";
-import { TransferProgressEvent } from "@azure/core-http";
-import { PagedAsyncIterableIterator } from "@azure/core-paging";
-import { BlockBlobClient } from "@azure/storage-blob";
-import { from, Observable, Subscriber } from "rxjs";
-import { distinctUntilChanged, scan, startWith } from "rxjs/operators";
+import { Inject, Injectable } from '@angular/core';
+import { TransferProgressEvent } from '@azure/core-http';
+import { PagedAsyncIterableIterator } from '@azure/core-paging';
+import {
+  BlobServiceClient,
+  BlockBlobClient,
+  Metadata,
+} from '@azure/storage-blob';
+import { from, Observable, Subscriber } from 'rxjs';
+import { distinctUntilChanged, scan, startWith } from 'rxjs/operators';
 import {
   BlobContainerRequest,
   BlobFileRequest,
   BlobStorageClientFactory,
-  BlobStorageRequest
-} from "../types/azure-storage";
-import { BLOB_STORAGE_TOKEN } from "./token";
+  BlobStorageRequest,
+} from '../types/azure-storage';
+import { BLOB_STORAGE_TOKEN } from './token';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root',
 })
 export class BlobStorageService {
   constructor(
@@ -24,6 +28,22 @@ export class BlobStorageService {
   getContainers(request: BlobStorageRequest) {
     const blobServiceClient = this.buildClient(request);
     return this.asyncToObservable(blobServiceClient.listContainers());
+  }
+
+  // added mrobst
+  createContainer(request: BlobContainerRequest, metadata?: Metadata) {
+    const containerClient = this.getContainerClient(request);
+    return from(
+      containerClient.create({
+        metadata: metadata,
+      })
+    );
+  }
+
+  // added mrobst
+  exists(request: BlobContainerRequest) {
+    const containerClient = this.getContainerClient(request);
+    return from(containerClient.exists());
   }
 
   listBlobsInContainer(request: BlobContainerRequest) {
@@ -61,13 +81,13 @@ export class BlobStorageService {
   }
 
   private uploadFile(blockBlobClient: BlockBlobClient, file: File) {
-    return new Observable<number>(observer => {
+    return new Observable<number>((observer) => {
       blockBlobClient
         .uploadBrowserData(file, {
           onProgress: this.onProgress(observer),
           blobHTTPHeaders: {
-            blobContentType: file.type
-          }
+            blobContentType: file.type,
+          },
         })
         .then(
           this.onUploadComplete(observer, file),
@@ -96,7 +116,7 @@ export class BlobStorageService {
     iterable: PagedAsyncIterableIterator<T, TService>
   ) {
     return new Observable<T>(
-      observer =>
+      (observer) =>
         void (async () => {
           try {
             for await (const item of iterable as AsyncIterable<T>) {
